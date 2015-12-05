@@ -2,9 +2,9 @@ import java.util.Scanner;
 public class MorseCode {
 
 	public static void main(String[] args) {
-		//This does work
-		String s = convertToMorseCode("Mozme ist hrat");
-		System.out.println(howManyCharacters("Mozme ist hrat"));
+		String s = convertToMorseCode("Ako sa mas");
+		System.out.println(s);
+		convertFromMorseCode(s);
 		
 	}
 	
@@ -53,49 +53,96 @@ public class MorseCode {
 		return "The input can't be empty!";
 	}
 	
-	public static String convertfromMorseCode(String source) {
+	/*
+	 * 
+	 */
+	public static String convertFromMorseCode(String source) {
 		int words = howManyWords(source);
 		if (!isEmpty(source) && words > 0) {
-			String[] tableLetters = { 
-					".-", "-...", "-.-.", "-..", ".",
-					"..-.", "--.", "....", "..", ".---",
-					"-.-", ".-..", "--", "-.", "---",
-					".--.", "--.-", ".-.", "...", "-",
-					"..-", "...-", ".--", "-..-",
-					"-.--", "--.."};
-			String[] tableNumbers = { //From 0 to 9
-					"-----", ".----", "..---", "...--", "....-", 
-					".....", "-....", "--...", "---..", "----."};
-			
-			//final product
-			String finalText = "";
-			
 			//Extract words
 			String[] list = getWordsFromText(source);
 			
-			//Cycle through words
-			for (int x = 0; x < list.length; x++) {
-				//Process each word in order to extract each character
-				int word = 0;
-				int firstSpace = 0;
-				int secondSpace = 0;
-				while(word < list.length) {
-					int characters = howManyCharacters(list[word]);
-					for (int y = 0; y < list[word].length(); y++) {
-						secondSpace = list[word].indexOf(" ", firstSpace + 1);
-						String temp = list[word].substring(firstSpace, secondSpace);
-						
-						firstSpace = secondSpace;
-					}
-					
-					word++;
-				}
-				
-			}
+			//Process each word in order to extract each character
+			int word = 0;
 			
-			return finalText;
+			//Cycle words
+			while(word < list.length) {
+					int firstSpace = 0;
+					int secondSpace = 0;
+					
+					//Cycle characters
+					do {
+						secondSpace = list[word].indexOf(" ", firstSpace + 1);
+						if (secondSpace < 0) {
+							String temp = list[word].substring(firstSpace);
+							temp = temp.trim();
+							
+							if (findInTable(temp) == false) {
+								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
+								System.exit(1);
+							}
+							else {
+								
+							}
+						}
+						else {
+							String temp = list[word].substring(firstSpace, secondSpace);
+							temp = temp.trim();
+							
+							if (findInTable(temp) == false) {
+								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
+								System.exit(1);
+							}
+							else {
+								
+							}
+							
+							firstSpace = secondSpace;
+						}
+					}while(secondSpace > 0);
+					
+					System.out.print(" ");
+					word++;
+				}		
 		}
 		return "The input can't be empty!";
+	}
+	
+	/*
+	 * boolean findInTable(String findString)
+	 * Prints converted morse code
+	 * Returns true(1) if everything went all right or false(0) if there was an error
+	 */
+	public static boolean findInTable(String findString) {
+		String[] tableLetters = { 
+				".-", "-...", "-.-.", "-..", ".",
+				"..-.", "--.", "....", "..", ".---",
+				"-.-", ".-..", "--", "-.", "---",
+				".--.", "--.-", ".-.", "...", "-",
+				"..-", "...-", ".--", "-..-",
+				"-.--", "--.."};
+		String[] tableNumbers = { //From 0 to 9
+				"-----", ".----", "..---", "...--", "....-", 
+				".....", "-....", "--...", "---..", "----."};
+			
+		for (int x = 0; x < (tableLetters.length + tableNumbers.length); x++) {
+			if (x < tableLetters.length) {
+				//Check in tableLetters
+				if (findString.equals(tableLetters[x])) {
+					System.out.print((char)('A' + x));
+					return true;
+				}
+			}
+			else {
+				//Check in tableNumbers
+				if (findString.equals(tableNumbers[x - tableLetters.length])) {
+					System.out.print((char)('0' + (x - tableLetters.length)));
+					return true;
+				}
+			}
+		}
+		//character is not in the conversion tables -> error
+		return false;
 	}
 	
 	/*
