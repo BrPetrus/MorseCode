@@ -4,8 +4,8 @@ public class MorseCode {
 	public static void main(String[] args) {
 		String s = convertToMorseCode("Ako sa mas");
 		System.out.println(s);
-		convertFromMorseCode(s);
-		
+		String c = convertFromMorseCode(".- -.- --- | ... .- | -- .- ...");
+		System.out.println(c);
 	}
 	
 	/*
@@ -62,6 +62,9 @@ public class MorseCode {
 			//Extract words
 			String[] list = getWordsFromText(source);
 			
+			//Final string
+			String convertedString = "";
+			
 			//Process each word in order to extract each character
 			int word = 0;
 			
@@ -77,43 +80,44 @@ public class MorseCode {
 							String temp = list[word].substring(firstSpace);
 							temp = temp.trim();
 							
-							if (findInTable(temp) == false) {
+							
+							if (findInTable(temp) == ' ') {
 								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
 								System.exit(1);
 							}
 							else {
-								
+								convertedString += findInTable(temp);
 							}
 						}
 						else {
 							String temp = list[word].substring(firstSpace, secondSpace);
 							temp = temp.trim();
 							
-							if (findInTable(temp) == false) {
+							if (findInTable(temp) == ' ') {
 								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
 								System.exit(1);
 							}
 							else {
-								
+								convertedString += findInTable(temp);
 							}
 							
 							firstSpace = secondSpace;
 						}
 					}while(secondSpace > 0);
 					
-					System.out.print(" ");
+					convertedString += ' ';
 					word++;
-				}		
+				}
+			return convertedString;
 		}
 		return "The input can't be empty!";
 	}
 	
 	/*
 	 * boolean findInTable(String findString)
-	 * Prints converted morse code
-	 * Returns true(1) if everything went all right or false(0) if there was an error
+	 * Returns converted value
 	 */
-	public static boolean findInTable(String findString) {
+	public static char findInTable(String findString) {
 		String[] tableLetters = { 
 				".-", "-...", "-.-.", "-..", ".",
 				"..-.", "--.", "....", "..", ".---",
@@ -129,20 +133,19 @@ public class MorseCode {
 			if (x < tableLetters.length) {
 				//Check in tableLetters
 				if (findString.equals(tableLetters[x])) {
-					System.out.print((char)('A' + x));
-					return true;
+					return (char)('A' + x);
+					
 				}
 			}
 			else {
 				//Check in tableNumbers
 				if (findString.equals(tableNumbers[x - tableLetters.length])) {
-					System.out.print((char)('0' + (x - tableLetters.length)));
-					return true;
+					return (char)('0' + x - tableLetters.length);
 				}
 			}
 		}
-		//character is not in the conversion tables -> error
-		return false;
+		
+		return ' ';
 	}
 	
 	/*
