@@ -175,7 +175,7 @@ public class MorseCode {
 	 * If there was an error, method returns ' '
 	 */
 	public static char findInTable(String findString) {
-		String[] tableLetters = { 
+		String[] tableLetters = { //From A to Z
 				".-", "-...", "-.-.", "-..", ".",
 				"..-.", "--.", "....", "..", ".---",
 				"-.-", ".-..", "--", "-.", "---",
@@ -191,7 +191,6 @@ public class MorseCode {
 				//Check in tableLetters
 				if (findString.equals(tableLetters[x])) {
 					return (char)('A' + x);
-					
 				}
 			}
 			else {
@@ -202,20 +201,6 @@ public class MorseCode {
 			}
 		}
 		return ' ';
-	}
-	
-	/*
-	 * int howManyCharacters(String s)
-	 * Return how many characters are in String s
-	 */
-	public static int howManyCharacters(String s) {
-		int lastSpace = 0;
-		int spaceCount = 0;
-		for (; s.indexOf(" ", lastSpace + 1) > 0; spaceCount++) {
-			lastSpace = s.indexOf(" ", lastSpace + 1);
-		}
-		
-		return s.length() - spaceCount; //If we remove all spaces, we will get the number of characters in string
 	}
 	
 	/*
@@ -231,7 +216,7 @@ public class MorseCode {
 		//Check if it's one word, so we just pass the string basically
 		if (words == 1) {
 			String[] listWords = new String[words];
-			listWords[0] = s.trim();
+			listWords[0] = s.trim(); //Not enough trimming :D
 			return listWords;
 		}
 		
@@ -255,7 +240,7 @@ public class MorseCode {
 			temp = temp.trim(); //Delete unwanted spaces
 			listWords[index] = temp; //Assign
 			
-			index++; //We just processed next word -> increment index 
+			index++; //We just processed a word -> increment index 
 			lSpace = nSpace; //The ending space is now the "starting one" in the next iteration
 		}
 			
