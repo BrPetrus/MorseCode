@@ -2,10 +2,59 @@ import java.util.Scanner;
 public class MorseCode {
 
 	public static void main(String[] args) {
-		String s = convertToMorseCode("Ako sa mas");
+		/*String s = convertToMorseCode("Ako sa mas");
 		System.out.println(s);
 		String c = convertFromMorseCode(".- -.- --- | ... .- | -- .- ...");
-		System.out.println(c);
+		System.out.println(c);*/
+		
+		Scanner input = new Scanner(System.in);
+		
+		boolean isRunning = true;
+		while(isRunning) {
+			//Header
+			System.out.println("Morse code converter");
+			System.out.println("--------------------");
+			
+			String userInput = "";
+			
+			//Menu
+			switch(getChoice(1, 2, "Please enter desired conversion\n1) Convert English to Morse code\n2) Convert Morse code to English")) {
+			case 1:
+				//E -> M
+				System.out.println("\nEnglish to Morse code");
+				System.out.println("-----------------------");
+				System.out.println("Separate each word with space. Punctuation will be ignored.");
+				System.out.println("Please enter your sentence:");
+				userInput = input.nextLine();
+				
+				//Process
+				userInput = convertToMorseCode(userInput);
+				
+				//Print
+				System.out.println(userInput);
+				System.out.println();
+				System.out.println();
+				break;
+				
+			case 2:
+				//M -> E
+				System.out.println("\nMorse code to English");
+				System.out.println("-----------------------");
+				System.out.println("Separate each letter with space and each word with '|'. Punctuation will be ignored.");
+				System.out.println("Please enter your sentence:");
+				userInput = input.nextLine();
+				
+				//Process
+				userInput = convertFromMorseCode(userInput);
+				
+				//Print
+				System.out.println(userInput);
+				System.out.println();
+				System.out.println();
+				
+				break;
+			}
+		}
 	}
 	
 	/*
@@ -54,11 +103,14 @@ public class MorseCode {
 	}
 	
 	/*
-	 * 
+	 * String convertFromMorseCode(String source)
+	 * Converts string of morse code to English text
+	 * !NOTE: Everything is upper-case
+	 * !NOTE: Invalid character will crash the function
 	 */
 	public static String convertFromMorseCode(String source) {
 		int words = howManyWords(source);
-		if (!isEmpty(source) && words > 0) {
+		if (!isEmpty(source) && words > 0) { //If the string is empty -> return error message
 			//Extract words
 			String[] list = getWordsFromText(source);
 			
@@ -76,12 +128,12 @@ public class MorseCode {
 					//Cycle characters
 					do {
 						secondSpace = list[word].indexOf(" ", firstSpace + 1);
-						if (secondSpace < 0) {
+						if (secondSpace < 0) { //If there isn't a next space
 							String temp = list[word].substring(firstSpace);
 							temp = temp.trim();
 							
 							
-							if (findInTable(temp) == ' ') {
+							if (findInTable(temp) == ' ') { //findInTable will return ' ' if something didn't go well
 								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
 								System.exit(1);
 							}
@@ -93,7 +145,7 @@ public class MorseCode {
 							String temp = list[word].substring(firstSpace, secondSpace);
 							temp = temp.trim();
 							
-							if (findInTable(temp) == ' ') {
+							if (findInTable(temp) == ' ') { //findInTable will return ' ' if something didn't go well
 								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
 								System.exit(1);
 							}
@@ -103,9 +155,9 @@ public class MorseCode {
 							
 							firstSpace = secondSpace;
 						}
-					}while(secondSpace > 0);
+					}while(secondSpace > 0); //If there is no other ' ' -> switch to next word
 					
-					convertedString += ' ';
+					convertedString += ' '; //Add space between the words
 					word++;
 				}
 			return convertedString;
@@ -116,6 +168,7 @@ public class MorseCode {
 	/*
 	 * boolean findInTable(String findString)
 	 * Returns converted value
+	 * If there was an error, method returns ' '
 	 */
 	public static char findInTable(String findString) {
 		String[] tableLetters = { 
@@ -144,7 +197,6 @@ public class MorseCode {
 				}
 			}
 		}
-		
 		return ' ';
 	}
 	
@@ -159,7 +211,7 @@ public class MorseCode {
 			lastSpace = s.indexOf(" ", lastSpace + 1);
 		}
 		
-		return s.length() - spaceCount;
+		return s.length() - spaceCount; //If we remove all spaces, we will get the number of characters in string
 	}
 	
 	/*
@@ -248,8 +300,9 @@ public class MorseCode {
 		
 		int answer = 0;
 		do {
-			System.out.print(text + "\nPlease enter a number between " + min + " and " + max + ": 9");
+			System.out.print(text + "\nPlease enter a number between " + min + " and " + max + ": ");
 			answer = input.nextInt();
+			System.out.println();
 		}while(answer > max || answer < min); //Repeat until user enters a value between min and max
 		
 		return answer;
