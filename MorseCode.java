@@ -1,12 +1,11 @@
+//Morse converter
+//Written by Bruno Petrus for CTYOnline Introduction to Java course
+//29.11.2015 - 6.12.2015
+
 import java.util.Scanner;
 public class MorseCode {
 
 	public static void main(String[] args) {
-		/*String s = convertToMorseCode("Ako sa mas");
-		System.out.println(s);
-		String c = convertFromMorseCode(".- -.- --- | ... .- | -- .- ...");
-		System.out.println(c);*/
-		
 		Scanner input = new Scanner(System.in);
 		
 		boolean isRunning = true;
@@ -18,7 +17,7 @@ public class MorseCode {
 			String userInput = "";
 			
 			//Menu
-			switch(getChoice(1, 2, "Please enter desired conversion\n1) Convert English to Morse code\n2) Convert Morse code to English")) {
+			switch(getChoice(1, 3, "Please enter desired conversion\n1) Convert English to Morse code\n2) Convert Morse code to English\n3) End")) {
 			case 1:
 				//E -> M
 				System.out.println("\nEnglish to Morse code");
@@ -52,6 +51,11 @@ public class MorseCode {
 				System.out.println();
 				System.out.println();
 				
+				break;
+				
+			case 3:
+				//End
+				isRunning = false;
 				break;
 			}
 		}
