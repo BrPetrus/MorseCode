@@ -85,6 +85,7 @@ public class MorseCode {
 			//Each letter separated by space and each word separated by '|'
 			//First convert string to upper-case
 			source = source.toUpperCase();
+			source = source.trim();
 			
 			//Now process every letter ignoring punctuation 
 			for (int x = 0; x < source.length(); x++) {
@@ -137,7 +138,7 @@ public class MorseCode {
 							temp = temp.trim();
 							
 							
-							if (findInTable(temp) == ' ') { //findInTable will return ' ' if something didn't go well
+							if (findInTable(temp) == '@') { //findInTable will return ' ' if something didn't go well
 								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
 								System.exit(1);
 							}
@@ -149,7 +150,7 @@ public class MorseCode {
 							String temp = list[word].substring(firstSpace, secondSpace);
 							temp = temp.trim();
 							
-							if (findInTable(temp) == ' ') { //findInTable will return ' ' if something didn't go well
+							if (findInTable(temp) == '@') { //findInTable will return ' ' if something didn't go well
 								System.out.println("Fatal error occurred during processing String: \"" + temp + "\"!");
 								System.exit(1);
 							}
@@ -172,7 +173,7 @@ public class MorseCode {
 	/*
 	 * boolean findInTable(String findString)
 	 * Returns converted value
-	 * If there was an error, method returns ' '
+	 * If there was an error, method returns '@'
 	 */
 	public static char findInTable(String findString) {
 		String[] tableLetters = { //From A to Z
@@ -187,7 +188,11 @@ public class MorseCode {
 				".....", "-....", "--...", "---..", "----."};
 			
 		for (int x = 0; x < (tableLetters.length + tableNumbers.length); x++) {
-			if (x < tableLetters.length) {
+			if (findString.equals(""))
+			{
+				return ' ';
+			}
+			else if (x < tableLetters.length) {
 				//Check in tableLetters
 				if (findString.equals(tableLetters[x])) {
 					return (char)('A' + x);
@@ -200,7 +205,7 @@ public class MorseCode {
 				}
 			}
 		}
-		return ' ';
+		return '@';
 	}
 	
 	/*
